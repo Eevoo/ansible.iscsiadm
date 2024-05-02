@@ -1,45 +1,48 @@
 ---
-
 - name: Include RHEL/CentOS variables
   include_vars: vars_RedHat_CentOS.yml
   when: ansible_distribution in ['RedHat','CentOS','AlmaLinux']
 
-- name: Include SLES/openSUSE variable
+- name: Include SLES/openSUSE variables
   include_vars: vars_SUSE_openSUSE.yml
   when: 'ansible_os_family == "Suse" or ansible_os_family == "openSUSE Leap"'
+
+- name: Include Debian/Ubuntu/Proxmox variables
+  include_vars: vars_Debian_Proxmox.yml
+  when: 'ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"'
 
 - name: "Install package(s) {{ iscsiadmin_package }}"
   package:
     name: "{{ iscsiadmin_package }}"
-    state: 'installed'
+    state: "present"
 
 - name: "Start and enable {{ iscsiadmin_service }} service"
   service:
     name: "{{ iscsiadmin_service }}"
     enabled: true
-    state: 'started'
+    state: "started"
 
 - name: Set startup to automatic in /etc/iscsi/iscid.conf
   lineinfile:
-    path: '/etc/iscsi/iscsid.conf'
+    path: "/etc/iscsi/iscsid.conf"
     regex: '^node\.startup\ =\ manual'
-    line: 'node.startup = automatic'
-    owner: 'root'
-    group: 'root'
-    mode: '0600'
+    line: "node.startup = automatic"
+    owner: "root"
+    group: "root"
+    mode: "0600"
 
 - name: Collect facts about installed iSCSI initiator
   iscsiadm_facts:
 
 - name: Setup iSCSI Initiator name
   lineinfile:
-    dest: '/etc/iscsi/initiatorname.iscsi'
-    regexp: '^InitiatorName='
+    dest: "/etc/iscsi/initiatorname.iscsi"
+    regexp: "^InitiatorName="
     line: "InitiatorName={{ custom_iscsi_initiator_name is defined|ternary(custom_iscsi_initiator_name,iscsi_initiator_name) }}"
-    create: 'yes'
-    owner: 'root'
-    group: 'root'
-    mode: '0600'
+    create: "yes"
+    owner: "root"
+    group: "root"
+    mode: "0600"
   notify: restart service
 
 - name: flush_handlers
