@@ -54,7 +54,13 @@ Please note that SLES 15.x / openSUSE Leap 15.x only ship with python3 installed
 To avoid the ansible warning for the discovered python interpreter, add a line like the following to your inventory:
 ```
 192.168.22.53 ansible_python_interpreter=/usr/bin/python3
+
 ```
+
+Note for Proxmox 8.2 / Debian Bookworm users
+-------
+
+This has been tested on Proxmox 8.2 in ansible-pull mode. It has not been tested on Debian Bookworm itself (which has a slightly older kernel than Proxmox 8.2) or Ubuntu.
 
 License
 -------

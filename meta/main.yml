@@ -1,6 +1,6 @@
 galaxy_info:
   author: Ondrej Faměra
-  description: iscsiadm initiator configuration for CentOS/RHEL/AlmaLinux/SLES/OpenSUSE.
+  description: iscsiadm initiator configuration for CentOS/RHEL/AlmaLinux/SLES/OpenSUSE/ProxMox.
   license: GPLv3
   min_ansible_version: 2.5
   platforms:
@@ -17,6 +17,9 @@ galaxy_info:
     - name: opensuse
       versions:
         - 15
+    - name: Debian
+      versions:
+        - 'bookworm'
   galaxy_tags:
     - system
     - storage
